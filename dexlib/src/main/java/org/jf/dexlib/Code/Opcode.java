@@ -282,7 +282,9 @@ public enum Opcode
 
     IPUT_OBJECT_VOLATILE((short)0xfc, "iput-object-volatile", ReferenceType.field, Format.Format22c, Opcode.ODEX_ONLY | Opcode.ODEXED_INSTANCE_VOLATILE | Opcode.CAN_THROW | Opcode.CAN_CONTINUE),
     SGET_OBJECT_VOLATILE((short)0xfd, "sget-object-volatile", ReferenceType.field, Format.Format21c, Opcode.ODEX_ONLY | Opcode.ODEXED_STATIC_VOLATILE | Opcode.CAN_THROW | Opcode.CAN_CONTINUE | Opcode.SETS_REGISTER),
-    SPUT_OBJECT_VOLATILE((short)0xfe, "sput-object-volatile", ReferenceType.field, Format.Format21c, Opcode.ODEX_ONLY | Opcode.ODEXED_STATIC_VOLATILE | Opcode.CAN_THROW | Opcode.CAN_CONTINUE);
+    SPUT_OBJECT_VOLATILE((short)0xfe, "sput-object-volatile", ReferenceType.field, Format.Format21c, Opcode.ODEX_ONLY | Opcode.ODEXED_STATIC_VOLATILE | Opcode.CAN_THROW | Opcode.CAN_CONTINUE),
+
+    JUNK_OP((short)0xffff, "junk-op", ReferenceType.none, Format.Format10x, Opcode.CAN_CONTINUE);
 
     private static Opcode[] opcodesByValue;
     private static Opcode[] expandedOpcodesByValue;
