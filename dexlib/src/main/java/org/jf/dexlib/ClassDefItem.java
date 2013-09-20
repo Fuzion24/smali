@@ -196,6 +196,10 @@ public class ClassDefItem extends Item<ClassDefItem> {
         return accessFlags;
     }
 
+    public void setAccessFlags(int axxFlags) {
+        accessFlags = axxFlags;
+    }
+
     @Nullable
     public TypeIdItem getSuperclass() {
         return superType;
