@@ -10,7 +10,7 @@ object Versions {
 
 object Publish {
   val organization = "android"
-  val version      = "0.12"
+  val version      = "0.17"
   val localRepo    = Path.userHome / "maven" / "android" / "smali"
   val githubRepo   = ""
 }

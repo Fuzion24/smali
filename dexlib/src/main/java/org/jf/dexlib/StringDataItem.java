@@ -135,6 +135,10 @@ public class StringDataItem extends Item<StringDataItem> {
         return stringValue;
     }
 
+    public void changeStringValue(String newValue){
+        stringValue = newValue;
+    }
+
     /**
      * calculate and cache the hashcode
      */

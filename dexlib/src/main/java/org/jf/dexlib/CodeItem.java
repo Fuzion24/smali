@@ -367,6 +367,10 @@ public class CodeItem extends Item<CodeItem> {
         return debugInfo;
     }
 
+    public void setDebugInfo(DebugInfoItem newDebugInfo) {
+        debugInfo = newDebugInfo;
+    }
+
     /**
      * @return the number of 2-byte words that the parameters to the method containing this code take
      */
@@ -826,6 +830,10 @@ public class CodeItem extends Item<CodeItem> {
             return startCodeAddress;
         }
 
+        public void setStartCodeAddress(int newAddress) {
+            startCodeAddress = newAddress;
+        }
+
         /**
          * @return The number of code blocks that the try block covers
          */
@@ -896,6 +904,10 @@ public class CodeItem extends Item<CodeItem> {
          */
         public int getCatchAllHandlerAddress() {
             return catchAllHandlerAddress;
+        }
+
+        public void setCatchAllHandlerAddress(int newAddress) {
+            catchAllHandlerAddress = newAddress;
         }
 
         /**
@@ -1067,6 +1079,10 @@ public class CodeItem extends Item<CodeItem> {
 
         public int getHandlerAddress() {
             return handlerAddress;
+        }
+
+        public void setHandlerAddress(int newAddress){
+            handlerAddress = newAddress;
         }
 
         @Override

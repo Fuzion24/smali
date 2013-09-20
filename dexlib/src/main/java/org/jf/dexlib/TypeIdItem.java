@@ -148,6 +148,10 @@ public class TypeIdItem extends Item<TypeIdItem> {
         return typeDescriptor.getStringValue();
     }
 
+    public StringIdItem getTypeStringIdItem(){
+        return typeDescriptor;
+    }
+
     /**
      * Returns the type descriptor as a <code>String</code> for the given type
      * @param typeIdItem The <code>TypeIdItem</code> to get the type descriptor of
