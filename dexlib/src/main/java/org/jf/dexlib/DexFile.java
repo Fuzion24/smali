@@ -343,7 +343,12 @@ public class DexFile
 
         try {
             byte[] magic = new byte[8];
+
+            inputStream.mark(0);
+
             int magicRead = inputStream.read(magic);
+
+            inputStream.reset();
 
             if(magicRead < 8){
                 throw new RuntimeException("Error reading Magic bytes");
