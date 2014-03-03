@@ -59,7 +59,7 @@ public class HeaderItem extends Item<HeaderItem> {
     private int checksum;
     private byte[] signature;
 
-    private byte[] extraStuff = null;
+    private byte[] extraStuff = {};
 
     /**
      * Create a new uninitialized <code>HeaderItem</code>
@@ -219,6 +219,9 @@ public class HeaderItem extends Item<HeaderItem> {
         out.writeInt(dexFile.getFileSize());
 
         out.annotate("header_size: 0x" + Integer.toHexString(getHeaderSize()));
+
+        System.out.println(getHeaderSize());
+
         out.writeInt(getHeaderSize());
 
         out.annotate("endian_tag: 0x" + Integer.toHexString(LITTLE_ENDIAN));
@@ -277,9 +280,9 @@ public class HeaderItem extends Item<HeaderItem> {
         out.writeInt(dexFile.getDataOffset());
 
         out.annotate("extra_header stuff: 0x" + Integer.toHexString(extraStuff.length));
-        if(extraStuff != null) {
-             out.write(extraStuff);
-        }
+
+        out.write(extraStuff);
+
     }
 
     /** {@inheritDoc} */

@@ -1,10 +1,8 @@
 import sbt._
 import Keys._
-import com.github.hexx.GithubRepoPlugin._
-import com.typesafe.sbt.SbtGit.GitKeys._
 
 object Versions {
-  val scala     = "2.10.2"
+  val scala     = "2.10.3"
   val scalatest = "1.9.1"
 }
 
@@ -31,58 +29,54 @@ object Smali extends Build {
 
   lazy val smaliUtil  =  Project("smaliUtil", file("util"),   settings = utilSettings)
 
-  lazy val dexlibSettings = Defaults.defaultSettings ++ githubRepoSettings ++ Seq(
+  lazy val dexlibSettings = Defaults.defaultSettings ++ Seq(
     name         := "Dexlib",
     scalaVersion := Versions.scala,
     version      := Publish.version,
     organization := Publish.organization,    
-    localRepo    := Publish.localRepo,
-    githubRepo   := Publish.githubRepo,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "com.google.code.findbugs" % "jsr305" % "1.3.9",
-      "com.google.collections" % "google-collections" % "1.0"
+      "com.google.collections" % "google-collections" % "1.0",
+      "junit" % "junit" % "4.10" % "test"
     )
   )
 
-  lazy val dexlib2Settings = Defaults.defaultSettings ++ githubRepoSettings ++ Seq(
+  lazy val dexlib2Settings = Defaults.defaultSettings ++ Seq(
     name         := "Dexlib2",
     scalaVersion := Versions.scala,
     version      := Publish.version,
     organization := Publish.organization,    
-    localRepo    := Publish.localRepo,
-    githubRepo   := Publish.githubRepo,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "com.google.code.findbugs" % "jsr305" % "1.3.9",
-      "com.google.collections" % "google-collections" % "1.0"
+      "com.google.collections" % "google-collections" % "1.0",
+      "junit" % "junit" % "4.10" % "test"
     )
   )
 
-  lazy val utilSettings = Defaults.defaultSettings ++ githubRepoSettings ++ Seq(
+  lazy val utilSettings = Defaults.defaultSettings ++ Seq(
     name         := "Util",
     version      := Publish.version,
     organization := Publish.organization,    
-    localRepo    := Publish.localRepo,
-    githubRepo   := Publish.githubRepo,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "commons-cli" % "commons-cli" % "1.2",
       "com.google.code.findbugs" % "jsr305" % "1.3.9",
-      "com.google.guava" % "guava" % "14.0"
+      "com.google.guava" % "guava" % "14.0",
+      "junit" % "junit" % "4.10" % "test"
     )
   )
 
-  lazy val smaliSettings = Defaults.defaultSettings ++ githubRepoSettings ++ Seq(
+  lazy val smaliSettings = Defaults.defaultSettings ++ Seq(
     name         := "Smali",
     version      := Publish.version,
     organization := Publish.organization,    
-    localRepo    := Publish.localRepo,
-    githubRepo   := Publish.githubRepo,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "commons-cli" % "commons-cli" % "1.2",
-      "com.google.guava" % "guava" % "14.0"
+      "com.google.guava" % "guava" % "14.0",
+      "junit" % "junit" % "4.10" % "test"
     )
   )
 

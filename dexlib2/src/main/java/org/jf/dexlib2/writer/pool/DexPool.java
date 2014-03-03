@@ -75,6 +75,14 @@ public class DexPool extends DexWriter<CharSequence, StringReference, CharSequen
                 annotationPool, annotationSetPool);
     }
 
+    public static DexPool makeDexPool(@Nonnull Set<ClassDef> classes){
+        DexPool dexPool = makeDexPool();
+        for (ClassDef classDef: classes) {
+            ((ClassPool)dexPool.classSection).intern(classDef);
+        }
+        return dexPool;
+    }
+
     private DexPool(int api, StringPool stringPool, TypePool typePool, ProtoPool protoPool, FieldPool fieldPool,
                     MethodPool methodPool, ClassPool classPool, TypeListPool typeListPool,
                     AnnotationPool annotationPool, AnnotationSetPool annotationSetPool) {
