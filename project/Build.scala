@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 object Versions {
-  val scala     = "2.10.3"
+  val scala     = "2.11.0-M8"
   val scalatest = "1.9.1"
 }
 
@@ -33,7 +33,7 @@ object Smali extends Build {
     name         := "Dexlib",
     scalaVersion := Versions.scala,
     version      := Publish.version,
-    organization := Publish.organization,    
+    organization := Publish.organization,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "com.google.code.findbugs" % "jsr305" % "1.3.9",
@@ -46,7 +46,7 @@ object Smali extends Build {
     name         := "Dexlib2",
     scalaVersion := Versions.scala,
     version      := Publish.version,
-    organization := Publish.organization,    
+    organization := Publish.organization,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "com.google.code.findbugs" % "jsr305" % "1.3.9",
@@ -58,7 +58,7 @@ object Smali extends Build {
   lazy val utilSettings = Defaults.defaultSettings ++ Seq(
     name         := "Util",
     version      := Publish.version,
-    organization := Publish.organization,    
+    organization := Publish.organization,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "commons-cli" % "commons-cli" % "1.2",
@@ -71,7 +71,7 @@ object Smali extends Build {
   lazy val smaliSettings = Defaults.defaultSettings ++ Seq(
     name         := "Smali",
     version      := Publish.version,
-    organization := Publish.organization,    
+    organization := Publish.organization,
     scalaVersion := Versions.scala,
     libraryDependencies ++= Seq(
       "commons-cli" % "commons-cli" % "1.2",
