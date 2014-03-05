@@ -1,3 +1,4 @@
+*.iml
 /.gradle
 /baksmali/build
 /dexlib/build
@@ -5,3 +6,11 @@
 /dexlib2/accessorTestGenerator/build
 /smali/build
 /util/build
+dexlib2/target/
+project/target/
+project/project/target/
+smali/target/
+util/target/
+target/
+.idea/
+.idea_modules/
