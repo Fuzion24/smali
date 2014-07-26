@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 object Versions {
-  val scala     = "2.11.0-M8"
+  val scala     = "2.10.3"
   val scalatest = "1.9.1"
 }
 
