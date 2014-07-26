@@ -208,6 +208,11 @@ public class DexBackedDexFile extends BaseDexBuffer implements DexFile {
     }
 
     @Nonnull
+    public int getStringCount(){
+        return stringCount;
+    }
+
+    @Nonnull
     public String getString(int stringIndex) {
         int stringOffset = getStringIdItemOffset(stringIndex);
         int stringDataOffset = readSmallUint(stringOffset);
