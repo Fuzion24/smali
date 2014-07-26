@@ -31,8 +31,7 @@ package org.jf.dexlib;
 import org.jf.dexlib.Util.AnnotatedOutput;
 import org.jf.dexlib.Util.Input;
 import org.jf.dexlib.Util.Leb128Utils;
-import org.jf.util.StringUtils;
-import org.jf.util.Utf8Utils;
+import org.jf.dexlib.Util.Utf8Utils;
 
 public class StringDataItem extends Item<StringDataItem> {
     private int hashCode = 0;
@@ -104,7 +103,7 @@ public class StringDataItem extends Item<StringDataItem> {
                     ")");
             out.writeUnsignedLeb128(stringValue.length());
 
-            out.annotate(encodedValue.length + 1, "string_data: \"" + StringUtils.escapeString(stringValue) + "\"");
+            out.annotate(encodedValue.length + 1, "string_data: \"" + Utf8Utils.escapeString(stringValue) + "\"");
         } else {
             out.writeUnsignedLeb128(stringValue.length());
         }
@@ -119,7 +118,7 @@ public class StringDataItem extends Item<StringDataItem> {
 
     /** {@inheritDoc} */
     public String getConciseIdentity() {
-        return "string_data_item: \"" + StringUtils.escapeString(getStringValue()) + "\"";
+        return "string_data_item: \"" + Utf8Utils.escapeString(getStringValue()) + "\"";
     }
 
     /** {@inheritDoc} */

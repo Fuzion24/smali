@@ -29,9 +29,6 @@
 package org.jf.dexlib;
 
 import org.jf.dexlib.Util.*;
-import org.jf.util.AlignmentUtils;
-import org.jf.util.ExceptionWithContext;
-import org.jf.util.Hex;
 
 import java.io.*;
 import java.security.DigestException;
@@ -328,6 +325,130 @@ public class DexFile
                 inputStream = new FileInputStream(file);
             }
 
+            byte[] dexMagic, odexMagic;
+            boolean isDex = false;
+            this.isOdex = false;
+
+            for (int i=0; i<HeaderItem.MAGIC_VALUES.length; i++) {
+                byte[] magic_value = HeaderItem.MAGIC_VALUES[i];
+                if (Arrays.equals(magic, magic_value)) {
+                    isDex = true;
+                    break;
+                }
+            }
+            if (!isDex) {
+                if (Arrays.equals(magic, OdexHeader.MAGIC_35)) {
+                    isOdex = true;
+                } else if (Arrays.equals(magic, OdexHeader.MAGIC_36)) {
+                    isOdex = true;
+                }
+            }
+
+            if (isOdex) {
+                byte[] odexHeaderBytes = FileUtils.readStream(inputStream, 40);
+                Input odexHeaderIn = new ByteArrayInput(odexHeaderBytes);
+                odexHeader = new OdexHeader(odexHeaderIn);
+
+                int dependencySkip = odexHeader.depsOffset - odexHeader.dexOffset - odexHeader.dexLength;
+                if (dependencySkip < 0) {
+                    throw new ExceptionWithContext("Unexpected placement of the odex dependency data");
+                }
+
+                if (odexHeader.dexOffset > 40) {
+                    FileUtils.readStream(inputStream, odexHeader.dexOffset - 40);
+                }
+
+                in = new ByteArrayInput(FileUtils.readStream(inputStream, odexHeader.dexLength));
+
+                if (dependencySkip > 0) {
+                    FileUtils.readStream(inputStream, dependencySkip);
+                }
+
+                odexDependencies = new OdexDependencies(
+                        new ByteArrayInput(FileUtils.readStream(inputStream, odexHeader.depsLength)));
+            } else if (isDex) {
+                in = new ByteArrayInput(FileUtils.readStream(inputStream, (int)fileLength));
+            } else {
+                StringBuffer sb = new StringBuffer("bad magic value:");
+                for (int i=0; i<8; i++) {
+                    sb.append(" ");
+                    sb.append(Hex.u1(magic[i]));
+                }
+                throw new RuntimeException(sb.toString());
+            }
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (zipFile != null) {
+                zipFile.close();
+            }
+        }
+
+        ReadContext readContext = new ReadContext();
+
+        HeaderItem.readFrom(in, 0, readContext);
+
+        //the map offset was set while reading in the header item
+        int mapOffset = readContext.getSectionOffset(ItemType.TYPE_MAP_LIST);
+
+        in.setCursor(mapOffset);
+        MapItem.readFrom(in, 0, readContext);
+
+        //the sections are ordered in such a way that the item types
+        Section sections[] = new Section[] {
+                StringDataSection,
+                StringIdsSection,
+                TypeIdsSection,
+                TypeListsSection,
+                ProtoIdsSection,
+                FieldIdsSection,
+                MethodIdsSection,
+                AnnotationsSection,
+                AnnotationSetsSection,
+                AnnotationSetRefListsSection,
+                AnnotationDirectoriesSection,
+                DebugInfoItemsSection,
+                CodeItemsSection,
+                ClassDataSection,
+                EncodedArraysSection,
+                ClassDefsSection
+        };
+
+        for (Section section: sections) {
+            if (section == null) {
+                continue;
+            }
+
+            if (skipInstructions && (section == CodeItemsSection || section == DebugInfoItemsSection)) {
+                continue;
+            }
+
+            int sectionOffset = readContext.getSectionOffset(section.ItemType);
+            if (sectionOffset > 0) {
+                int sectionSize = readContext.getSectionSize(section.ItemType);
+                in.setCursor(sectionOffset);
+                section.readFrom(sectionSize, in, readContext);
+            }
+        }
+    }
+
+    public DexFile(InputStream inputStream, long fileLength, boolean preserveSignedRegisters, boolean skipInstructions)
+            throws IOException {
+        this(preserveSignedRegisters, skipInstructions);
+
+        byte[] magic = new byte[8];
+
+        Input in = null;
+        ZipFile zipFile = null;
+
+        inputStream.mark(8);
+        for (int i=0; i<8; i++) {
+            magic[i] = (byte)inputStream.read();
+        }
+        inputStream.reset();
+
+        try {
             byte[] dexMagic, odexMagic;
             boolean isDex = false;
             this.isOdex = false;

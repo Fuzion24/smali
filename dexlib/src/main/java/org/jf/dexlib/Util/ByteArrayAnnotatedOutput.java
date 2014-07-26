@@ -24,9 +24,6 @@
 
 package org.jf.dexlib.Util;
 
-import org.jf.util.ExceptionWithContext;
-import org.jf.util.Hex;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;

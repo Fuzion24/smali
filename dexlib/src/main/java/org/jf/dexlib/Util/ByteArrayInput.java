@@ -24,10 +24,6 @@
 
 package org.jf.dexlib.Util;
 
-import org.jf.util.AlignmentUtils;
-import org.jf.util.ExceptionWithContext;
-import org.jf.util.Utf8Utils;
-
 /**
  * Implementation of {@link Input} which reads the data from a
  * <code>byte[]</code> instance.
@@ -43,6 +39,9 @@ public class ByteArrayInput
 
     /** &gt;= 0; current read cursor */
     private int cursor;
+
+    /* buffer for reading UTF-8 strings */
+    private char[] buffer = null;
 
     /**
      * Constructs an instance with the given data
@@ -284,6 +283,9 @@ public class ByteArrayInput
         return result;
     }
 
+    // Slightly nasty hack to have a single char buffer per thread/instance
+    private char[] stringBuffer = null;
+
     /** {@inheritDoc} */
     public String realNullTerminatedUtf8String() {
         int startPosition = cursor;
@@ -295,7 +297,11 @@ public class ByteArrayInput
         //skip the terminating null
         cursor++;
 
-        return Utf8Utils.utf8BytesToString(data, startPosition, byteCount);
+        if (stringBuffer == null || stringBuffer.length < byteCount) {
+            stringBuffer = new char[byteCount];
+        }
+
+        return Utf8Utils.utf8BytesToString(stringBuffer, data, startPosition, byteCount);
     }
 
     /** {@inheritDoc} */

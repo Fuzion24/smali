@@ -24,6 +24,9 @@
 
 package org.jf.dexlib.Util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * LEB128 (little-endian base 128) utilities.
  */
@@ -56,7 +59,22 @@ public final class Leb128Utils {
 
         return count + 1;
     }
+    
+    public static final int getShort(byte[] array, int offset) {
+        return (array[offset + 1] & 0xff) << 8 | array[offset] & 0xff; 
+    }
 
+    public static final Pair<Integer, Integer> readLEB(byte[] array, int offset) {
+        int val = array[offset];
+        boolean more = (val & 0x80) != 0;
+        val &= 0x7f;
+        
+        if (!more)
+            return new Pair<Integer, Integer>(val, 1);
+        else 
+            return new Pair<Integer, Integer>(val << 8 | array[offset + 1] & 0xff, 2);
+    }
+    
     /**
      * Gets the number of bytes in the signed LEB128 encoding of the
      * given value.
@@ -92,16 +110,26 @@ public final class Leb128Utils {
      */
     public static void writeUnsignedLeb128(int value, byte[] buffer, int bufferIndex) {
         int remaining = value >>> 7;
-        int count = 0;
 
         while (remaining != 0) {
             buffer[bufferIndex] = (byte)((value & 0x7f) | 0x80);
             bufferIndex++;
             value = remaining;
             remaining >>>= 7;
-            count++;
         }
 
         buffer[bufferIndex] = (byte)(value & 0x7f);
+    }
+    
+    public static byte[] unsignedLeb128(int value) throws IOException{
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	int remaining = value >>> 7;
+    	while(remaining != 0){
+    		bos.write((byte)((value & 0x7f) | 0x80));
+    		value = remaining;
+    		remaining >>>= 7;
+    	}
+    	bos.write((byte)(value & 0x7f));
+    	return bos.toByteArray();
     }
 }

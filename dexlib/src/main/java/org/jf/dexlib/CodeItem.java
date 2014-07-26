@@ -33,8 +33,6 @@ import org.jf.dexlib.Code.*;
 import org.jf.dexlib.Debug.DebugInstructionIterator;
 import org.jf.dexlib.Debug.DebugOpcode;
 import org.jf.dexlib.Util.*;
-import org.jf.util.AlignmentUtils;
-import org.jf.util.ExceptionWithContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,7 @@ public class CodeItem extends Item<CodeItem> {
     private int outWords;
     private DebugInfoItem debugInfo;
     private Instruction[] instructions;
+    private byte[] encodedInstructions;
     private TryItem[] tries;
     private EncodedCatchHandler[] encodedCatchHandlers;
 
@@ -152,7 +151,7 @@ public class CodeItem extends Item<CodeItem> {
 
         final ArrayList<Instruction> instructionList = new ArrayList<Instruction>();
 
-        byte[] encodedInstructions = in.readBytes(instructionCount * 2);
+        encodedInstructions = in.readBytes(instructionCount * 2);
         InstructionIterator.IterateInstructions(dexFile, encodedInstructions,
                 new InstructionIterator.ProcessInstructionDelegate() {
                     public void ProcessInstruction(int codeAddress, Instruction instruction) {
@@ -413,6 +412,10 @@ public class CodeItem extends Item<CodeItem> {
             currentCodeAddress += instruction.getSize(currentCodeAddress);
         }
         return currentCodeAddress;
+    }
+
+    public byte[] getEncodedInstructions() {
+        return encodedInstructions;
     }
 
     /**

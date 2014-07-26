@@ -24,9 +24,6 @@
 
 package org.jf.dexlib.Util;
 
-import org.jf.util.AlignmentUtils;
-import org.jf.util.ExceptionWithContext;
-
 import java.util.ArrayList;
 
 /**

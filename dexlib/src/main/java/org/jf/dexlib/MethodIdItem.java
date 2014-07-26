@@ -176,6 +176,7 @@ public class MethodIdItem extends Item<MethodIdItem> implements Convertible<Meth
     }
 
     private String cachedShortMethodString = null;
+
     /**
      * @return a string formatted like methodName(TTTT..)R
      */

@@ -26,27 +26,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jf.dexlib.Code.Analysis;
+package org.jf.dexlib.Util;
 
-import org.jf.dexlib.Util.ExceptionWithContext;
-
-public class ValidationException extends ExceptionWithContext {
-    private int codeAddress;
-
-    public ValidationException(int codeAddress, String errorMessage) {
-        super(errorMessage);
-        this.codeAddress = codeAddress;
+public abstract class AlignmentUtils {
+    public static int alignOffset(int offset, int alignment) {
+        int mask = alignment - 1;
+        assert (alignment >= 0) && ((mask & alignment) == 0);
+        return (offset + mask) & ~mask;
     }
 
-    public ValidationException(String errorMessage) {
-        super(errorMessage);
-    }
-
-    public void setCodeAddress(int codeAddress) {
-        this.codeAddress = codeAddress;
-    }
-
-    public int getCodeAddress() {
-        return codeAddress;
+    public static boolean isAligned(int offset, int alignment) {
+        return (offset % alignment) == 0;
     }
 }
