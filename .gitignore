@@ -1,7 +1,12 @@
 /.gradle
+/dexlib2/build/
+/project/target/
+/project/project/
+/smali/target/
+/dexlib/target/
+/baksmali/target/
+/util/target/
 /baksmali/build
 /dexlib/build
-/dexlib2/build
-/dexlib2/accessorTestGenerator/build
 /smali/build
 /util/build
